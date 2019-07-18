@@ -21,7 +21,7 @@
 #ifndef __PLATFORM_H
 #define __PLATFORM_H
 
-#include <libftdi1/ftdi.h>
+#include <libusb-1.0/libusb.h>
 
 #include "timing.h"
 
@@ -33,48 +33,14 @@
 #	endif
 #endif
 
-#define FT2232_VID	0x0403
-#define FT2232_PID	0x6010
-
 #define PLATFORM_HAS_DEBUG
 
 #define SET_RUN_STATE(state)
 #define SET_IDLE_STATE(state)
-#define SET_ERROR_STATE(state)
-
-extern struct ftdi_context *ftdic;
+//#define SET_ERROR_STATE(state)
 
 void platform_buffer_flush(void);
 int platform_buffer_write(const uint8_t *data, int size);
 int platform_buffer_read(uint8_t *data, int size);
 
-typedef struct cable_desc_s {
-	int vendor;
-	int product;
-	int interface;
-	uint8_t dbus_data;
-	uint8_t dbus_ddr;
-	uint8_t cbus_data;
-	uint8_t cbus_ddr;
-	uint8_t bitbang_tms_in_port_cmd;
-	uint8_t bitbang_tms_in_pin;
-	uint8_t bitbang_swd_dbus_read_data;
-	/* bitbang_swd_dbus_read_data is same as dbus_data,
-	 * as long as CBUS is not involved.*/
-	char *description;
-	char * name;
-}cable_desc_t;
-
-extern cable_desc_t *active_cable;
-
-static inline int platform_hwversion(void)
-{
-	        return 0;
-}
-
-#define MPSSE_TDI 2
-#define MPSSE_TDO 4
-#define MPSSE_TMS 8
-
 #endif
-
